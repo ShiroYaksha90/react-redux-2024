@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Children, useState } from "react";
 
 const tempMovieData = [
   {
@@ -50,14 +50,8 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const NavBar = () => {
-  return (
-    <nav className="nav-bar">
-      <Logo />
-      <Search />
-      <MovieNums />
-    </nav>
-  );
+const NavBar = ({ children }) => {
+  return <nav className="nav-bar">{children}</nav>;
 };
 
 const Logo = () => {
@@ -82,14 +76,14 @@ const Search = () => {
   );
 };
 
-const MovieNums = () => {
+const MovieNums = ({ movies }) => {
   return (
     <p className="num-results">
-      Found <strong>X</strong> results
+      Found <strong>{movies.length}</strong> results
     </p>
   );
 };
-const ListBox = () => {
+const ListBox = ({ movies }) => {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="box">
@@ -99,13 +93,12 @@ const ListBox = () => {
       >
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList />}
+      {isOpen1 && <MovieList movies={movies} />}
     </div>
   );
 };
 
-const MovieList = () => {
-  const [movies, setMovies] = useState(tempMovieData);
+const MovieList = ({ movies }) => {
   return (
     <ul className="list">
       {movies?.map((movie) => (
@@ -147,7 +140,7 @@ const WatchedBox = () => {
           <Summary watched={watched} />
           <ul className="list">
             {watched.map((movie) => (
-              <WatchedMovieList movie={movie} />
+              <WatchedMovieList movie={movie} key={movie.imdbID} />
             ))}
           </ul>
         </>
@@ -158,7 +151,7 @@ const WatchedBox = () => {
 
 const WatchedMovieList = ({ movie }) => {
   return (
-    <li key={movie.imdbID}>
+    <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -207,21 +200,24 @@ const Summary = ({ watched }) => {
     </div>
   );
 };
-const Main = () => {
-  return (
-    <main className="main">
-      <ListBox />
-      <WatchedBox />
-    </main>
-  );
+const Main = ({ children }) => {
+  return <main className="main">{children}</main>;
 };
 
 export default function App() {
+  const [movies, setMovies] = useState(tempMovieData);
   return (
     <>
-      <NavBar />
+      <NavBar>
+        <Logo />
+        <Search />
+        <MovieNums movies={movies} />
+      </NavBar>
 
-      <Main />
+      <Main>
+        <ListBox movies={movies} />
+        <WatchedBox />
+      </Main>
     </>
   );
 }
