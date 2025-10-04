@@ -201,19 +201,25 @@ const Main = ({ children }) => {
   return <main className="main">{children}</main>;
 };
 
+const Loader = () => {
+  return <p className="loader">Loading...</p>;
+};
+
 const KEY = "bafc29c1";
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isLoading, setIsLoading] = useState(false);
   const query = "Interstellar";
   useEffect(() => {
+    setIsLoading(true);
     const fetchMovies = async () => {
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
       );
       const data = await res.json();
       setMovies(data.Search);
-      console.log(data);
+      setIsLoading(false);
     };
     fetchMovies();
   }, []);
@@ -226,9 +232,7 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
+        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
         <Box>
           <Summary watched={watched} />
           <WatchedMovieList movies={watched} />
