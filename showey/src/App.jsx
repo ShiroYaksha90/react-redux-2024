@@ -1,4 +1,4 @@
-import { Children, useState } from "react";
+import { Children, useState, useEffect } from "react";
 
 const tempMovieData = [
   {
@@ -72,6 +72,7 @@ const Search = () => {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      id="search"
     />
   );
 };
@@ -145,7 +146,7 @@ const WatchedMovieList = ({ movies }) => {
   return (
     <ul className="list">
       {movies?.map((movie) => (
-        <li>
+        <li key={movie.imdbID}>
           <img src={movie.Poster} alt={`${movie.Title} poster`} />
           <h3>{movie.Title}</h3>
           <div>
@@ -200,9 +201,22 @@ const Main = ({ children }) => {
   return <main className="main">{children}</main>;
 };
 
+const KEY = "bafc29c1";
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
+  const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(tempWatchedData);
+  const query = "Interstellar";
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      console.log(data);
+    };
+    fetchMovies();
+  }, []);
   return (
     <>
       <NavBar>
