@@ -197,7 +197,7 @@ const Loader = () => {
 const ErrorMessage = ({ msg }) => {
   return (
     <p className="error">
-      <span>⚠️</span>
+      <span>⛔</span>
       {msg}
     </p>
   );
