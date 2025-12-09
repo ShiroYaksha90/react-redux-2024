@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import propTypes from ""
+import PropTypes from "prop-types";
 
 const containerStyle = {
   display: "flex",
@@ -100,6 +100,12 @@ const Star = ({ onRate, full, onMouseEnter, onMouseLeave, color, size }) => {
       )}
     </span>
   );
+};
+StarRating.prototype = {
+  maxRating: PropTypes.number,
+  color: PropTypes.string,
+  size: PropTypes.string,
+  messages: PropTypes.array,
 };
 
 /*
