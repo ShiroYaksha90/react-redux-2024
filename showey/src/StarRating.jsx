@@ -11,7 +11,7 @@ const starContainerStyle = {
   display: "flex",
 };
 
-export const StarRating = ({
+const StarRating = ({
   maxRating = 5,
   color = "#fcc419",
   size = "24px",
@@ -108,6 +108,7 @@ StarRating.prototype = {
   messages: PropTypes.array,
 };
 
+export default StarRating;
 /*
 FULL STAR
 
