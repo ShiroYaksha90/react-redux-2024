@@ -5,7 +5,7 @@ import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Question from "./Question";
-const initialState = { questions: [], status: "loading", error: "" };
+const initialState = { questions: [], status: "loading", error: "", index: 0 };
 function reducer(state, action) {
   switch (action.type) {
     case "dataReady":
@@ -19,7 +19,7 @@ function reducer(state, action) {
   }
 }
 export default function App() {
-  const [{ questions, status, error }, dispatch] = useReducer(
+  const [{ questions, status, error, index }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -40,7 +40,7 @@ export default function App() {
           {status === "ready" && (
             <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
           )}
-          {status === "active" && <Question />}
+          {status === "active" && <Question question={questions[index]} />}
         </MainComponent>
       </div>
     </div>
