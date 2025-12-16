@@ -1,10 +1,26 @@
 import React from "react";
 
-export default function NextQuestion({ dispatch, answer }) {
+export default function NextQuestion({
+  dispatch,
+  answer,
+  index,
+  numQuestions,
+}) {
   if (answer === null) return null;
-  return (
-    <button className="btn btn-ui" onClick={() => dispatch({ type: "next" })}>
-      Next
-    </button>
-  );
+
+  if (index < numQuestions - 1)
+    return (
+      <button className="btn btn-ui" onClick={() => dispatch({ type: "next" })}>
+        Next
+      </button>
+    );
+  if (index === numQuestions - 1)
+    return (
+      <button
+        className="btn btn-ui"
+        onClick={() => dispatch({ type: "finished" })}
+      >
+        Finish
+      </button>
+    );
 }
